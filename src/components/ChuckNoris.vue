@@ -6,7 +6,7 @@
                 <b-row class="justify-content-md-center">
                     <b-col cols="6"> 
 
-                        <b-card title="Card Title"
+                        <b-card title="New Joke"
                                 :img-src="randomJoke.iconUrl"
                                 img-alt="Image"
                                 img-top
@@ -14,7 +14,13 @@
                                 style="max-width: 20rem;"
                                 class="mb-2">
                                 <p>{{randomJoke.value}}</p>
-                        </b-card>
+                                <b-button variant="warning"
+                                          @click="getNewJoke"  
+                                          >
+                                          Get New Joke
+                                </b-button>
+                                <input class="form-control mt-2" @input="setCategory"/>                                     
+                         </b-card>
 
                     </b-col>
                 </b-row>
@@ -25,7 +31,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 import { store } from "../store";
 
 export default {
@@ -36,14 +42,20 @@ export default {
     })
   },
   methods: {
-    ...mapActions(["fatchRandomJoke"])
+      ...mapMutations([
+          'setJokeCategory'
+      ]),
+    getNewJoke(){
+       store.dispatch("fatchRandomJoke", () => {}) 
+    },
+    setCategory(event){
+        this.setJokeCategory(event.target.value);
+        
+    }
   },
-  // created(){
-  //     this.fatchRandomJoke()
-  // },
   beforeRouteEnter(to, from, next) {
     store.dispatch("fatchRandomJoke", next);
-    //next();
+    
   }
 };
 </script>
