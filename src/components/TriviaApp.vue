@@ -4,31 +4,68 @@
         <b-container class="bv-example-row">
           <b-row class="justify-content-md-center">
             <b-col cols="10"> 
-              <b-list-group>
+              <!-- <b-list-group>
 
-                  <b-list-group-item 
-                          v-for="trivia in trivias" 
-                          :key="trivia.id"
-                          @click="toggleTrivia(trivia.id)">
-                      Question: {{trivia.question}} ?
-                          <!-- <b-button type="submit"
-                                    style="float: right"
-                                    @click="gotAnswer(trivia.id)"
-                                    v-b-modal.modal1>
-                                Answer
-                          </b-button> -->
-                  <b-list-group-item 
-                          :class="{ 'show': isVisibleTriviaAnswer(trivia.id) }">
-                    Answer: {{ trivia.answer }}
-                    </b-list-group-item>
-                  </b-list-group-item>
+                    <b-list-group-item 
+                           v-for="trivia in trivias" 
+                           :key="trivia.id"
+                           @click="toggleTrivia(trivia.id)">
+                       Question: {{trivia.question}} ?
+                           <b-button type="submit"
+                                     style="float: right"
+                                     @click="gotAnswer(trivia.id)"
+                                     v-b-modal.modal1>
+                                 Answer
+                           </b-button>
+                   <b-list-group-item 
+                           :class="{ 'show': isVisibleTriviaAnswer(trivia.id) }">
+                     Answer: {{ trivia.answer }}
+                     </b-list-group-item>
+                   </b-list-group-item>
                   
 
-              </b-list-group>
+                </b-list-group>
 
-              <!-- <b-modal id="modal1" title="Answer">
-                  <p class="my-4">{{ triviaAnswer }}</p>
-              </b-modal> -->
+               <b-modal id="modal1" title="Answer">
+                   <p class="my-4">{{ triviaAnswer }}</p>
+               </b-modal>   -->
+
+                <select
+                  class="custom-select"
+                  size="10"
+                  @change="onCategoryChanged"
+                >
+                  <option
+                    v-for="triviaCategory in triviaCategories"
+                    :key="triviaCategory.id"
+                    :value="triviaCategory.id">
+                    {{ triviaCategory.title }}
+                  </option>
+                </select>
+            <div class="accordion">
+              <div
+                      class="card"
+                v-for="trivia in trivias"
+                :key="trivia.id"
+                @click="toggleTrivia(trivia.id)"
+              >
+              <div class="card-header">
+                  <h5 class="mb-0">
+                    {{ trivia.question }}
+                  </h5>
+              </div>
+
+              <div
+                  class="collapse"
+                  :class="{ 'show': isVisibleTriviaAnswer(trivia.id) }"
+              >
+              <div class="card-body">
+                    {{ trivia.answer }}
+              </div>
+                </div>
+              </div>
+            </div>
+        
 
             </b-col>
           </b-row>
@@ -45,19 +82,23 @@ export default {
   data() {
     return {
       selectedTriviasId: [],
-      answer: "test"
+      answer: ''
     };
   },
   computed: {
     ...mapGetters({
-      trivias: "getTrivias"
+      trivias: "getTrivias",
+      triviaCategories: 'getTriviaCategories'
     }),
     // triviaAnswer() {
     //   return this.answer;
     // }
   },
   methods: {
-    ...mapActions(["fetchTrivias"]),
+    ...mapActions([
+      "fetchTrivias",
+      'fetchTriviaCategory'
+      ]),
     toggleTrivia(triviaId) {
       let triviaIdIndex = this.selectedTriviasId.indexOf(triviaId);
       let isSelectedTriviaId = this.selectedTriviasId.indexOf(triviaId) > -1;
@@ -69,6 +110,9 @@ export default {
     },
     isVisibleTriviaAnswer(triviaId){
       return this.selectedTriviasId.indexOf(triviaId) > -1;
+    },
+    onCategoryChanged(event) {
+      this.fetchTrivias(event.target.value)
     }
     // gotAnswer(id) {
     //   let trivias = this.trivias.filter(trivia => {
@@ -80,6 +124,7 @@ export default {
   },
   created() {
     this.fetchTrivias();
+    this.fetchTriviaCategory();
   }
 };
 </script>
