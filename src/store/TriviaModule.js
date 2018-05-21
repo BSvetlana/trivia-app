@@ -1,11 +1,13 @@
 import {
   TriviaService
 } from "../services/TriviaService";
+  
 
 export const TriviaModule = {
   state: {
     trivias: [],
-    triviaCategories: []
+    triviaCategories: [],
+    searchTerm: ''
   },
   getters: {
     getTrivias(state) {
@@ -13,6 +15,9 @@ export const TriviaModule = {
     },
     getTriviaCategories(state) {
       return state.triviaCategories;
+    },
+    getSearchTerm(state) {
+      return state.searchTerm
     }
   },
   mutations: {
@@ -21,6 +26,9 @@ export const TriviaModule = {
     },
     setTriviaCategories(state, triviaCategories) {
       state.triviaCategories = triviaCategories;
+    },
+    setSearchTerm(state, searchTerm) {
+      state.searchTerm = searchTerm
     }
   },
   actions: {

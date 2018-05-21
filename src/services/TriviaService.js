@@ -7,11 +7,12 @@ class TriviaService {
         })
     }
 
-    getRandomTrivias(triviaCategoryId) {
+    getRandomTrivias(triviaCategoryId, term = '') {
         return this.client.get('/random', {
             params: {
                 count: 30,
-                category: triviaCategoryId
+                category: triviaCategoryId,
+                term
             }
         })
     }

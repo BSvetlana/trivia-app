@@ -14,8 +14,9 @@
 
         <b-navbar-nav class="ml-auto">
           <b-nav-form>
-            <b-form-input size="sm" class="mr-sm-2" type="text" placeholder="Search"/>
-            <b-button size="sm" class="my-2 my-sm-0" >Search</b-button>
+            <search-term 
+                  @search-term-change="setSearchTerm"
+            />
           </b-nav-form>
         </b-navbar-nav>
 
@@ -25,9 +26,18 @@
 </template>
 
 <script>
+import SearchTerm from './SearchTerm'
+import { mapMutations } from 'vuex'
 export default {
   name: 'NavBar',
-
+  components: {
+    SearchTerm
+  },
+  methods: {
+    ...mapMutations([
+        'setSearchTerm'
+    ])
+  }
 }
 </script>
 
